@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
+import { createAccount } from "@/lib/actions/user.actions";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -32,6 +33,7 @@ const authFormSchema = (formType: FormType) => {
 const AuthForm = ({ type }: { type: FormType }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [accountId, setAccountId] = React.useState(null);
 
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +45,21 @@ const AuthForm = ({ type }: { type: FormType }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const user = await createAccount({
+        fullName: values.fullName || "",
+        email: values.email,
+      });
+
+      setAccountId(user.accountId);
+    } catch (error) {
+      setErrorMessage("Failed to create an account. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -120,7 +136,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </p>
             <Link
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
-              className="text-brand ml-1 font-medium"
+              className="ml-1 font-medium text-brand"
             >
               {type === "sign-in" ? "Sign Up" : "Sign In"}
             </Link>
