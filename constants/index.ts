@@ -82,6 +82,6 @@ export const sortTypes = [
 ];
 
 export const avatarPlaceholderUrl =
-  "https://static.vecteezy.com/ti/vetor-gratis/p1/9292244-default-avatar-icon-vector-of-social-media-user-vetor.jpg";
+  "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg";
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024;
